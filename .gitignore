@@ -27,4 +27,11 @@ FPKM_test.tsv
 ENSG_to_NCBI.tsv
 GRCh38.d1.vd1.fa
 test_FPKM.tsv
+Normal_RNA_values
+Normal_TOP_values
+Tumor_TOP_values
+TCGA_sort
+clinical.tsv
+files.json
+CNN_NCC_200605.ipynb
 
