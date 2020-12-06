@@ -34,4 +34,5 @@ TCGA_sort
 clinical.tsv
 files.json
 CNN_NCC_200605.ipynb
+figure_regression
 
