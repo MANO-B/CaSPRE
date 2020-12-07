@@ -1,0 +1,34 @@
+# Transform tumor sample TOP-RNA FPKM data to RNA-seq FPKM
+# Considering the residual errors in prediction
+# Tentatively, 1,000 expression sets per sample were generated
+# Tumor TOP files should be saved in tumor name directory
+
+# loading training data
+path = "/mnt/HDD8TB/CaSPRE/Tumor_TOP_values/*.npy"
+files = glob(path)
+files.sort()
+trainImg = []
+trainLabel = []
+j = 1
+num = len(files)
+replicate = 1000
+
+# expression data generation
+for img in files:
+    for repli  in range(1000): 
+        print("\r" + str(j) + "/" + str(repli) + "/" + str(num) , end="")
+        tmp = np.load(img)
+        index_listのj -> iに変更
+        # 正規分布でのランダムサンプリングでベクトル作成
+        error_norm = np.random.normal(loc = 0, scale = 1, size = 1375)
+        # アフィン変換
+        
+        trainImg.append(np.expand_dims(tmp, axis=0))
+        j += 1
+        image_list = np.asarray(trainImg)
+        label = pathlib.Path(img).parent.name
+        trainLabel.append(label)
+    np.savez_compressed(result_dir + "/" + os.path.basename(fileName).replace(".FPKM.txt.npy", "") + "_image.npz", image_list)
+trainLabel = pd.DataFrame(trainLabel)
+
+trainLabel.to_csv(result_dir + "/TCGA_label.tsv", index=False, sep='\t')
