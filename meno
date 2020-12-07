@@ -20,15 +20,16 @@ for img in files:
         tmp = np.load(img)
         index_listのj -> iに変更
         # 正規分布でのランダムサンプリングでベクトル作成
-        error_norm = np.random.normal(loc = 0, scale = 1, size = 1375)
-        # アフィン変換
-        
+        error_norm_1 = np.random.normal(loc = 0, scale = 1, size = 1375)
+        error_norm_2 = np.random.normal(loc = 0, scale = 1, size = 1375)
+        tmp = np.power(16, tmp + 0.5) - 1
+        tmp = const_mean + tmp * intercept_mean + pred_mean_se * error_norm_1 + error_norm_2 * pred_residual_se
+        tmp = np.log2(tmp + 1) / 16 - 0.5
         trainImg.append(np.expand_dims(tmp, axis=0))
         j += 1
         image_list = np.asarray(trainImg)
         label = pathlib.Path(img).parent.name
         trainLabel.append(label)
-    np.savez_compressed(result_dir + "/" + os.path.basename(fileName).replace(".FPKM.txt.npy", "") + "_image.npz", image_list)
+np.savez_compressed("/mnt/HDD8TB/CaSPRE/Tumor_transformed/" + os.path.basename(img).replace(".FPKM.txt.npy", "") + "_image.npz", image_list)
 trainLabel = pd.DataFrame(trainLabel)
-
-trainLabel.to_csv(result_dir + "/TCGA_label.tsv", index=False, sep='\t')
+trainLabel.to_csv("/mnt/HDD8TB/CaSPRE/Tumor_transformed/" + os.path.basename(img).replace(".FPKM.txt.npy", "") + "_label.tsv", index=False, sep='\t')
